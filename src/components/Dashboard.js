@@ -1,19 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
+import Tabs from "./Tabs";
+import SideBar from "./SideBar";
 
 function Dashboard() {
   const [sideBarState, setSideBarState] = useState(false);
   const sideBarRef = useRef(null);
-
-  const [settingIconState, setSettingIconState] = useState(false);
-  const [settingOptionHeight, setSettingOptionHeight] = useState(0);
-  const settingOptionDiv = useRef(null);
-  const [chartIconState, setChartIconState] = useState(false);
+  const smSize = 768;
+  const [smallScreenState, setSmallScreenState] = useState(false);
+  const [searchBarIsVisible, setSearchBarIsVisible] = useState(false);
 
   const bodySectionRef = useRef(null);
 
-  let sideBarClassList =
-    "flex-col py-5   md:flex gap-y-3 transistion duration-300";
+  const storedTheme = localStorage.getItem("color-theme");
+  const [normalMode, setNormalMode] = useState(storedTheme == "normal");
+
+  const [tabHeader, setTabHeader] = useState("Main Dashboard");
+
+  const searchBarRef = useRef(null);
 
   const sideBarIconsOnly = (sideBar) => {
     const childDivs = sideBar.childNodes;
@@ -29,44 +32,89 @@ function Dashboard() {
             isFirstSvg = false;
             return;
           }
-          console.log("side bar status was ",sideBarState)
-          if (sideBarState && window.innerWidth > 640) {
+
+          if (sideBarState && window.innerWidth > smSize) {
             subElement.style.display = "none";
-          } else if (sideBarState && window.innerWidth <= 640) {
+          } else if (sideBarState && window.innerWidth <= smSize) {
             sideBarRef.current.style.display = "";
             subElement.style.display = "";
-          } else if (!sideBarState && window.innerWidth > 640) {
+          } else if (!sideBarState && window.innerWidth > smSize) {
             subElement.style.display = "";
             sideBarRef.current.style.display = "";
-          } else if (!sideBarState && window.innerWidth <= 640) {
+          } else if (!sideBarState && window.innerWidth <= smSize) {
             sideBarRef.current.style.display = "none";
             subElement.style.display = "";
-          }else{
-            console.log("else statement ")
+          } else {
+            console.log("else statement ");
           }
         });
       });
     });
   };
 
+  // dark mode light mode option
   useEffect(() => {
-    if (settingOptionHeight === 0) {
-      setSettingOptionHeight(settingOptionDiv.current.scrollHeight);
+    // dark mode is white theme in our case
+    if (localStorage.getItem("color-theme")) {
+      if (normalMode && localStorage.getItem("color-theme") === "light") {
+        localStorage.setItem("color-theme", "normal");
+      }
+
+      if (!normalMode && localStorage.getItem("color-theme") === "normal") {
+        localStorage.setItem("color-theme", "light");
+      }
+
+      console.log(
+        "normal mode is ",
+        normalMode,
+        " storage is ",
+        localStorage.getItem("color-theme")
+      );
+    } else {
+      if (normalMode) {
+        localStorage.setItem("color-theme", "normal");
+      } else {
+        localStorage.setItem("color-theme", "light");
+      }
     }
-  }, [settingOptionHeight, sideBarState]);
+  }, [normalMode]);
+
+  // dark mode light mode option
+  useEffect(() => {
+    // dark mode is white theme in our case
+    if (localStorage.getItem("color-theme")) {
+      if (!normalMode && localStorage.getItem("color-theme") === "light") {
+        document.documentElement.classList.add("dark");
+      }
+      if (normalMode && localStorage.getItem("color-theme") === "normal") {
+        document.documentElement.classList.remove("dark");
+      }
+    }
+  }, [normalMode]);
+
+  // Side bar work related
   useEffect(() => {
     sideBarIconsOnly(sideBarRef.current);
 
-    window.addEventListener('resize',()=>{
-      sideBarIconsOnly(sideBarRef.current)
-    })
+    window.addEventListener("resize", () => {
+      sideBarIconsOnly(sideBarRef.current);
+    });
   }, [sideBarState]);
 
+  useEffect(() => {
+    if (!searchBarIsVisible) {
+      // console.log("seach bar is not visible");
+    }
+    if (searchBarIsVisible) {
+      // console.log("seach bar is visible");
+    }
+  }, [searchBarIsVisible, smallScreenState]);
+
   return (
-    <div className="flex flex-col bg-main-blue h-[100vh] ">
+    <div className="flex flex-col dark:bg-main-lightMode bg-main-blue h-[100vh] ">
       {/* top section */}
-      <div className="flex items-center justify-between px-4 py-2 bg-secondary-blue">
-        <div className="flex flex-row items-center">
+      <div className="flex items-center justify-around px-1 py-4 md:py-2 md:px-4 md:justify-between dark:bg-secondary-lightMode bg-secondary-blue">
+        <div className="flex flex-row items-center justify-start ">
           {/* burger menu */}
           <div>
             <svg
@@ -75,7 +123,7 @@ function Dashboard() {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="w-8 h-8 text-white cursor-pointer"
+              className="w-6 h-6 text-white cursor-pointer dark:text-black"
               onClick={() => {
                 setSideBarState(!sideBarState);
               }}
@@ -89,16 +137,83 @@ function Dashboard() {
           </div>
 
           {/* logo div */}
-          <div className="flex flex-col justify-center px-10">
+          <div className="flex flex-col justify-center px-4 md:px-10">
             <img
               src={require("../resources/business_logo.png")}
-              className="w-12 h-12"
+              className="w-8 h-8 md:w-12 md:h-12"
               alt=""
             />
           </div>
         </div>
+        {/* search bar */}
+        <div className="flex flex-row items-center flex-grow mr-5 md:flex-grow-0 md:mr-0 gap-x-5">
+          <input
+            ref={searchBarRef}
+            type="text"
+            className={` py-1 px-1 md:px-2 md:py-2 rounded-md outline-none md:static md:flex w-full md:w-80 dark:bg-white bg-slate-300`}
+          />
+          <svg
+            onClick={() => {
+              if (smallScreenState) {
+              } else {
+              }
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6 font-bold text-white transition duration-100 ease-in-out cursor-pointer hover:scale-105 dark:text-black"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+            />
+          </svg>
+        </div>
         {/* bell and user related */}
-        <div className="flex flex-row items-center pr-5 gap-x-10">
+        <div className="flex flex-row items-center pr-1 md:pr-5 gap-x-4 md:gap-x-10">
+          {/* color mode icon */}
+          <div className="flex flex-col items-center">
+            {normalMode ? (
+              <svg
+                onClick={() => {
+                  setNormalMode(!normalMode);
+                }}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 text-white cursor-pointer"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                />
+              </svg>
+            ) : (
+              <svg
+                onClick={() => {
+                  setNormalMode(!normalMode);
+                }}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 cursor-pointer text-dark"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"
+                />
+              </svg>
+            )}
+          </div>
           {/* notify bell */}
           <div>
             <svg
@@ -107,7 +222,7 @@ function Dashboard() {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="w-8 h-8 text-white cursor-pointer"
+              className="w-6 h-6 text-white cursor-pointer md:w-6 md:h-6 dark:text-black"
             >
               <path
                 strokeLinecap="round"
@@ -118,10 +233,10 @@ function Dashboard() {
           </div>
           {/* user icon */}
           <div>
-            <div className="relative flex flex-col items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full">
+            <div className="relative flex flex-col items-center justify-center w-8 h-8 overflow-hidden bg-white rounded-full md:w-8 md:h-8">
               <img
                 src={require("../resources/cat_in_a_cup.jpg")}
-                className="absolute top-0 right-0 cursor-pointer"
+                className="absolute top-0 right-0 cursor-pointer "
                 alt=""
               />
             </div>
@@ -131,206 +246,19 @@ function Dashboard() {
       {/* body section */}
       <div
         ref={bodySectionRef}
-        className="relative flex flex-row px-3 bg-main-blue"
+        className="relative flex flex-row px-3 text-white dark:text-black dark:bg-main-lightMode bg-main-blue"
       >
         {/* sidebar */}
-        <div
-          ref={sideBarRef}
-          className={`${sideBarClassList} absolute md:static top-0 left-0 bg-slate-900 px-2 md:px-0 md:bg-main-blue`}
-        >
-          <div className="flex flex-row items-center px-3 py-2 rounded-md cursor-pointer bg-light-darker bg-opacity-5">
-            <div className="flex flex-row items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-8 h-8 text-white"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-                />
-              </svg>
 
-              <h4 className="px-10 font-bold text-white">Home</h4>
-            </div>
-          </div>
-          <div
-            onClick={() => {
-              setSettingIconState(!settingIconState);
-            }}
-            className="bg-light-darker bg-opacity-5"
-          >
-            <div
-              className={
-                " cursor-pointer flex flex-row px-3 items-center py-2 rounded-md "
-              }
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-8 h-8 text-white"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21.75 6.75a4.5 4.5 0 01-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 11-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 016.336-4.486l-3.276 3.276a3.004 3.004 0 002.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.867 19.125h.008v.008h-.008v-.008z"
-                />
-              </svg>
-
-              <h4 className="px-10 font-bold text-white">Options</h4>
-
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className={
-                  settingIconState
-                    ? "w-6 h-6 text-white transition ease-in-out  -rotate-180"
-                    : "w-6 h-6 text-white transition ease-in-out"
-                }
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </div>
-
-            <div
-              ref={settingOptionDiv}
-              className={
-                settingIconState
-                  ? `max-h-[${settingOptionHeight}px]  transistion duration-700 bg-light-darker bg-opacity-5`
-                  : "max-h-0  transistion duration-700  overflow-hidden bg-light-darker bg-opacity-5 "
-              }
-            >
-              <div className="py-2 ml-10">
-                <h1 className="text-sm text-white">Overview</h1>
-              </div>
-              <div className="py-2 ml-10">
-                <h1 className="text-sm text-white">Customer List</h1>
-              </div>
-              <div className="py-2 ml-10">
-                <h1 className="text-sm text-white">Overview</h1>
-              </div>
-              <div className="py-2 ml-10">
-                <h1 className="text-sm text-white">Customer List</h1>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-row items-center px-3 py-2 rounded-md cursor-pointer bg-light-darker bg-opacity-5">
-            <div className="flex flex-row items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-8 h-8 text-white"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"
-                />
-              </svg>
-
-              <h4 className="px-10 font-bold text-white">Elements</h4>
-            </div>
-          </div>
-
-          <div
-            onClick={() => {
-              setChartIconState(!chartIconState);
-            }}
-            className="bg-light-darker bg-opacity-5"
-          >
-            <div
-              className={
-                " cursor-pointer flex flex-row px-3 items-center py-2 rounded-md "
-              }
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-8 h-8 text-white"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21.75 6.75a4.5 4.5 0 01-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 11-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 016.336-4.486l-3.276 3.276a3.004 3.004 0 002.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.867 19.125h.008v.008h-.008v-.008z"
-                />
-              </svg>
-
-              <h4 className="px-10 font-bold text-white">Options</h4>
-
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className={
-                  chartIconState
-                    ? "w-6 h-6 text-white transition ease-in-out  -rotate-180"
-                    : "w-6 h-6 text-white transition ease-in-out"
-                }
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </div>
-
-            <div
-              className={
-                chartIconState
-                  ? `max-h-[${settingOptionHeight}]  ease-in-out transistion duration-300 bg-light-darker bg-opacity-5`
-                  : "max-h-0  transistion duration-700  overflow-hidden bg-light-darker bg-opacity-5 "
-              }
-            >
-              <div className="flex flex-col">
-                <div className="py-2 ml-10">
-                  <h1 className="text-sm text-white">Bar Charts</h1>
-                </div>
-                <div className="py-2 ml-10">
-                  <h1 className="text-sm text-white">Pie Charts</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <SideBar sideBarRef={sideBarRef} />
         {/* body */}
         <div className="w-full px-5 py-5">
-          <div className=" bg-light-darker bg-opacity-5 py-7 px-7">
-            <h1 className="font-bold text-white">Main body sections</h1>
+          <div className="flex flex-col py-4 text-white dark:text-black dark:bg-slate-200 bg-light-darker bg-opacity-5 px-7">
+            {/* header div */}
+            <div className="text-2xl font-semibold">{tabHeader}</div>
+
+            {/* tab options */}
+            <Tabs />
           </div>
         </div>
       </div>

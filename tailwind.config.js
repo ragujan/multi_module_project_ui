@@ -10,9 +10,13 @@ module.exports = {
         "secondary-blue":"#071a2e",
         "light-darker":"#0679f5",
         "transparent-blue":"#5595d5",
+        "main-lightMode" : "#c8d4e1",
+        "secondary-lightMode":"#cbcbcb",
+        "lightMode-light-darker":"#efecec",
       }
     },
   },
   plugins: [],
+  darkMode: 'class',
 }
 
