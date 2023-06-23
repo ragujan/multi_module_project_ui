@@ -8,7 +8,7 @@ import Tab5 from "./tabs/Tab5";
 
 function Home() {
   const [currentTab, setCurrentTab] = useState("tab1");
-  
+  const [tabName,setTabName] = useState("")
   const Tabs = {
     tab1 : Tab1,
     tab2 : Tab2,
@@ -32,7 +32,7 @@ function Home() {
   return (
     <>
       <div>
-      <div className="text-2xl font-semibold">Home</div>
+      <div className="text-xl font-semibold">Home - {tabName}</div>
         {/* tab header  */}
         <div className="flex flex-row items-center pt-5 overflow-hidden border-b-2 gap-x-3 border-b-slate-500 dark:border-black">
           <h1
@@ -89,7 +89,7 @@ function Home() {
           {currentTab === tabRef4 ? <Tab4 /> : ""}
 
           {currentTab === tabRef5 ? <Tab5 /> : ""} */}
-          <SelectedTab/>
+          <SelectedTab setTabName={setTabName}/>
         </div>
       </div>
     </>
