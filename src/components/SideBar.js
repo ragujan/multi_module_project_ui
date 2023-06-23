@@ -19,7 +19,7 @@ function SideBar(props) {
       >
         <div
           onClick={() => {
-            props.setCurrentTabGroup(<Home />);
+            props.setCurrentTabGroup("home");
           }}
           className="flex flex-row items-center px-3 py-2 rounded-md cursor-pointer dark:bg-lightMode-light-darker bg-light-darker bg-opacity-5"
         >
@@ -105,7 +105,7 @@ function SideBar(props) {
           >
             <div
               onClick={() => {
-                props.setCurrentTabGroup(<Overview />);
+                props.setCurrentTabGroup("overview");
               }}
               className="py-2 ml-10"
             >
@@ -113,7 +113,7 @@ function SideBar(props) {
             </div>
             <div
               onClick={() => {
-                props.setCurrentTabGroup(<CustomerList />);
+                props.setCurrentTabGroup("customer_list");
               }}
               className="py-2 ml-10"
             >
@@ -121,7 +121,7 @@ function SideBar(props) {
             </div>
             <div
               onClick={() => {
-                props.setCurrentTabGroup(<Settings />);
+                props.setCurrentTabGroup("settings");
               }}
               className="py-2 ml-10"
             >

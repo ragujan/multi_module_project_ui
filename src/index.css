@@ -1,4 +1,23 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .backgroundTab{
+        background: rgb(6,121,245);
+        background: radial-gradient(circle, rgba(6,121,245,1) 0%, rgba(0,30,60,1) 78%, rgba(7,26,46,1) 97%); 
+    }
+    .tabGlassEffect {
+        /* From https://css.glass */
+        background: rgba(255,255,255,0.5);
+        -webkit-backdrop-filter: blur(4px);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255,255,255,0.25);
+    }
+    .bgImage{
+        /* background-image: url("../src/resources/company_image.jpg"); */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}

@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import SideBar from "./SideBar";
 import Home from "./tabgroups/home/Home";
+import Overview from "./tabgroups/overview/Overview";
+import Settings from "./tabgroups/settings/Settings";
+import CustomerList from "./tabgroups/customer_list/CustomerList";
 
 function Dashboard() {
   const [sideBarState, setSideBarState] = useState(false);
@@ -16,8 +19,16 @@ function Dashboard() {
 
   const searchBarRef = useRef(null);
 
-  const [currentTabGroup,setCurrentTabGroup] = useState(<Home/>)
+  const [currentTabGroup, setCurrentTabGroup] = useState("home");
 
+  const TabGroup = {
+    home: Home,
+    overview: Overview,
+    customer_list:CustomerList,
+    settings:Settings,
+  };
+
+  let SelectedTabGroup = TabGroup[currentTabGroup];
   const sideBarIconsOnly = (sideBar) => {
     const childDivs = sideBar.childNodes;
 
@@ -250,17 +261,19 @@ function Dashboard() {
       >
         {/* sidebar */}
 
-        <SideBar setCurrentTabGroup={setCurrentTabGroup} currentTabGroup={currentTabGroup}  sideBarRef={sideBarRef} />
+        <SideBar
+          setCurrentTabGroup={setCurrentTabGroup}
+          currentTabGroup={currentTabGroup}
+          sideBarRef={sideBarRef}
+        />
         {/* body */}
         <div className="w-full px-5 py-5">
           <div className="flex flex-col py-4 text-white dark:text-black dark:bg-slate-200 bg-light-darker bg-opacity-5 px-7">
             {/* header div */}
-            
 
             {/* tab options */}
 
-            {currentTabGroup}
-           
+            <SelectedTabGroup />
           </div>
         </div>
       </div>
