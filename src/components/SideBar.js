@@ -1,11 +1,15 @@
-
 import React, { useEffect, useRef, useState } from "react";
+import Home from "./tabgroups/home/Home";
+import Overview from "./tabgroups/overview/Overview";
+import CustomerList from "./tabgroups/customer_list/CustomerList";
+import Settings from "./tabgroups/settings/Settings";
 function SideBar(props) {
-    const [settingIconState, setSettingIconState] = useState(false);
-    const [settingOptionHeight, setSettingOptionHeight] = useState(0);
-    const settingOptionDiv = useRef(null);
-    const [chartIconState, setChartIconState] = useState(false);
-    let sideBarClassList =
+  const [settingIconState, setSettingIconState] = useState(false);
+  const [settingOptionHeight, setSettingOptionHeight] = useState(0);
+  const settingOptionDiv = useRef(null);
+  const [chartIconState, setChartIconState] = useState(false);
+
+  let sideBarClassList =
     "flex-col py-5   md:flex gap-y-3 transistion duration-300";
   return (
     <>
@@ -13,7 +17,12 @@ function SideBar(props) {
         ref={props.sideBarRef}
         className={`${sideBarClassList} absolute md:static top-0 left-0 bg-slate-900 px-2 md:px-0 md:dark:bg-main-lightMode md:bg-main-blue`}
       >
-        <div className="flex flex-row items-center px-3 py-2 rounded-md cursor-pointer dark:bg-lightMode-light-darker bg-light-darker bg-opacity-5">
+        <div
+          onClick={() => {
+            props.setCurrentTabGroup(<Home />);
+          }}
+          className="flex flex-row items-center px-3 py-2 rounded-md cursor-pointer dark:bg-lightMode-light-darker bg-light-darker bg-opacity-5"
+        >
           <div className="flex flex-row items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -94,17 +103,32 @@ function SideBar(props) {
                 : "max-h-0  transistion duration-700  overflow-hidden bg-light-darker bg-opacity-5 "
             }
           >
-            <div className="py-2 ml-10">
+            <div
+              onClick={() => {
+                props.setCurrentTabGroup(<Overview />);
+              }}
+              className="py-2 ml-10"
+            >
               <h1 className="text-sm ">Overview</h1>
             </div>
-            <div className="py-2 ml-10">
+            <div
+              onClick={() => {
+                props.setCurrentTabGroup(<CustomerList />);
+              }}
+              className="py-2 ml-10"
+            >
               <h1 className="text-sm ">Customer List</h1>
             </div>
-            <div className="py-2 ml-10">
-              <h1 className="text-sm ">Overview</h1>
+            <div
+              onClick={() => {
+                props.setCurrentTabGroup(<Settings />);
+              }}
+              className="py-2 ml-10"
+            >
+              <h1 className="text-sm ">Settings</h1>
             </div>
             <div className="py-2 ml-10">
-              <h1 className="text-sm e">Customer List</h1>
+              <h1 className="text-sm e">Privacy</h1>
             </div>
           </div>
         </div>
@@ -145,23 +169,18 @@ function SideBar(props) {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth="1.5"
+              strokeWidth={1.5}
               stroke="currentColor"
               className="w-6 h-6 font-bold "
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M21.75 6.75a4.5 4.5 0 01-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 11-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 016.336-4.486l-3.276 3.276a3.004 3.004 0 002.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.867 19.125h.008v.008h-.008v-.008z"
+                d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"
               />
             </svg>
 
-            <h4 className="px-4 text-sm font-bold">Settings</h4>
+            <h4 className="px-4 text-sm font-bold">Charts</h4>
 
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -1,11 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import Tab1 from "./tabContent/Tab1";
-import Tab2 from "./tabContent/Tab2";
-import Tab5 from "./tabContent/Tab5";
-import Tab4 from "./tabContent/Tab4";
-import Tab3 from "./tabContent/Tab3";
 
-function Tabs() {
+function Overview() {
   const [currentTab, setCurrentTab] = useState(null);
   const tabRef1 = useRef(null);
   const tabRef2 = useRef(null);
@@ -36,7 +31,8 @@ function Tabs() {
 
   return (
     <>
-      <div>
+      <div className="">
+        <div className="text-2xl font-semibold">Overview</div>
         {/* tab header  */}
         <div className="flex flex-row items-center pt-5 overflow-hidden border-b-2 gap-x-3 border-b-slate-500 dark:border-black">
           <h1
@@ -87,16 +83,16 @@ function Tabs() {
         </div>
         {/* tab body */}
         <div className="flex flex-col items-center py-2">
-          {currentTab === tabRef1 ? <Tab1 /> : ""}
+          {/* {currentTab === tabRef1 ? <Tab1 /> : ""}
           {currentTab === tabRef2 ? <Tab2 /> : ""}
           {currentTab === tabRef3 ? <Tab3 /> : ""}
           {currentTab === tabRef4 ? <Tab4 /> : ""}
 
-          {currentTab === tabRef5 ? <Tab5 /> : ""}
+          {currentTab === tabRef5 ? <Tab5 /> : ""} */}
         </div>
       </div>
     </>
   );
 }
 
-export default Tabs;
+export default Overview;

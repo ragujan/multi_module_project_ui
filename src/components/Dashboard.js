@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import Tabs from "./Tabs";
 import SideBar from "./SideBar";
+import Home from "./tabgroups/home/Home";
 
 function Dashboard() {
   const [sideBarState, setSideBarState] = useState(false);
@@ -14,9 +14,9 @@ function Dashboard() {
   const storedTheme = localStorage.getItem("color-theme");
   const [normalMode, setNormalMode] = useState(storedTheme == "normal");
 
-  const [tabHeader, setTabHeader] = useState("Main Dashboard");
-
   const searchBarRef = useRef(null);
+
+  const [currentTabGroup,setCurrentTabGroup] = useState(<Home/>)
 
   const sideBarIconsOnly = (sideBar) => {
     const childDivs = sideBar.childNodes;
@@ -250,15 +250,17 @@ function Dashboard() {
       >
         {/* sidebar */}
 
-        <SideBar sideBarRef={sideBarRef} />
+        <SideBar setCurrentTabGroup={setCurrentTabGroup} currentTabGroup={currentTabGroup}  sideBarRef={sideBarRef} />
         {/* body */}
         <div className="w-full px-5 py-5">
           <div className="flex flex-col py-4 text-white dark:text-black dark:bg-slate-200 bg-light-darker bg-opacity-5 px-7">
             {/* header div */}
-            <div className="text-2xl font-semibold">{tabHeader}</div>
+            
 
             {/* tab options */}
-            <Tabs />
+
+            {currentTabGroup}
+           
           </div>
         </div>
       </div>
