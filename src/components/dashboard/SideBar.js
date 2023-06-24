@@ -1,8 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import Home from "./tabgroups/home/Home";
-import Overview from "./tabgroups/overview/Overview";
-import CustomerList from "./tabgroups/customer_list/CustomerList";
-import Settings from "./tabgroups/settings/Settings";
+import React, {  useRef, useState } from "react";
+
 function SideBar(props) {
   const [settingIconState, setSettingIconState] = useState(false);
   const [settingOptionHeight, setSettingOptionHeight] = useState(0);

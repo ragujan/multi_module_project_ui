@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import SideBar from "./SideBar";
-import Home from "./tabgroups/home/Home";
-import Overview from "./tabgroups/overview/Overview";
-import Settings from "./tabgroups/settings/Settings";
-import CustomerList from "./tabgroups/customer_list/CustomerList";
+import Home from "../tabgroups/home/Home";
+import Overview from "../tabgroups/overview/Overview";
+import Settings from "../tabgroups/settings/Settings";
+import CustomerList from "../tabgroups/customer_list/CustomerList";
 
 function Dashboard() {
   const [sideBarState, setSideBarState] = useState(false);
@@ -150,7 +150,7 @@ function Dashboard() {
           {/* logo div */}
           <div className="flex flex-col justify-center px-4 md:px-10">
             <img
-              src={require("../resources/business_logo.png")}
+              src={require("../../resources/business_logo.png")}
               className="w-8 h-8 md:w-12 md:h-12"
               alt=""
             />
@@ -246,7 +246,7 @@ function Dashboard() {
           <div>
             <div className="relative flex flex-col items-center justify-center w-8 h-8 overflow-hidden bg-white rounded-full md:w-8 md:h-8">
               <img
-                src={require("../resources/cat_in_a_cup.jpg")}
+                 src={require("../../resources/cat_in_a_cup.jpg")}
                 className="absolute top-0 right-0 cursor-pointer "
                 alt=""
               />

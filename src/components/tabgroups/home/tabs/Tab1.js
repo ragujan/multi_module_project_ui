@@ -9,7 +9,7 @@ function Tab1(props) {
     const divs = [];
     for (let index = 0; index < 8; index++) {
       divs.push(
-        <div key={index} className="flex flex-col px-3 py-3 border-b-2 border-white">
+        <div key={index} className="flex flex-col px-3 py-3 text-white border-b-2 border-white dark:text-white">
           {/* header */}
           <div className="py-2 font-bold">
             <h1>Header {index+1}</h1>
@@ -39,9 +39,7 @@ function Tab1(props) {
     <>
       <div className="w-full p-3 rounded-md backgroundTab">
         <div className="h-[400px] overflow-y-scroll rounded-md bgImage tabGlassEffect opacity-50 w-full flex flex-col ">
-          <h1 className="hidden font-bold text-white dark:text-black ">
-            Home Tab 1 Content
-          </h1>
+       
           {/* section 1 */}
           {loopDivs()}
         </div>
